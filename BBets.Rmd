@@ -1,19 +1,21 @@
 ---
 title: "Brownlows Bets"
-author: "Your Name"
-date: "Year 2019"
-output: 
+author: "Mackenzie Smith"
+date: "11/13/2019"
+output:
   html_document:
-    number_sections: true
-    toc: true
+    number_sections: yes
+    toc: yes
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-require(tidyverse)
-require(tidyverse)
 ```
-### `r as.character(Sys.Date())`
+
+```{r include=FALSE,echo=FALSE}
+require(tidyverse)
+
+```
 
 
 
@@ -23,7 +25,7 @@ require(tidyverse)
 
 <!--In this section you explain what you are trying to show.  Where did the data come from?  What is the research or other question you are trying to answer?!-->
 
- At the first day of class there are 35 students in Math Statistics class and professor Brownlow always proposes this bet to his students "I will wager $2 to your bet of $1 that at least two people in today's class have  the same birthday.  He tells me he has made that bet 1137 times so far. Where do you think his profits are? Discuss this in a markdown document
+ At the first day of class there are 35 students in Math Statistics class and professor Brownlow always proposes this bet to his students "I will wager 2 dollars to your bet of 1 dollar that at least two people in today's class have  the same birthday.  He tells me he has made that bet 1137 times so far. Where do you think his profits are? Discuss this in a markdown document
 
 # Methods
 
@@ -32,15 +34,51 @@ require(tidyverse)
 
 #Profit Estimate
 
+```{r}
+days=1:365
+count=1135
+repeatn=1000
+varstor=numeric()
+for (j in 1:repeatn){
+brownlow = 0
+for (i in 1:count) {
+  sam=sample(days,size=29,replace = T)
+  y=duplicated(sam)
+  if (sum(y)>0) brownlow=brownlow+1
+  else brownlow = brownlow - 2
+
+}
+varstor[j]=brownlow
+}
+hist(varstor)
+var(varstor)
+print(paste('average return =', mean(varstor)))
+
+```
+
+
 <!--Explain and display the results of your method of coming up with the estimate of professor Brownlows betting!-->
+
+Answer to Question 1: Using resampling, I found the average payout was 504 dollars when the class size was 35 and the bet was Brownlow wagers 2 dollars to a students bet of 1 dollar. 
 
 
 # Confidence interval of Brownlows earning
 
 <!--Explain and display your method of coming up with a 95% confidence interval of  professor Brownlows-->
 
+```{r}
+varStorted = sort(varstor)
+LCL = varStorted[25]
+UCL = varStorted[975]
+print(paste('UCL = ',UCL,'LCL = ',LCL))
+
+```
+Answer to Question 2: Brownlows payout 95% of the time will be between 421 and 580 dollars.
 
 # Discussion and Conclusion
 
 <!--Discussion and conclusion here.  If professor Brownlow is consistantly making or losing money how could he change his payout so that his profits center on zero?  Also discuss what size his class should be in order to have his current scheme balance at zero profit.!-->
 
+Answer to Question 3: To make the payout fair between Brownlow and students, Brownlow should wager around 4.35-4.40 dollars to a students bet of 1 dollar.
+
+Answer to Question 4: To make the payout fair between Brownlows wager of 2 dollars and a students bet of 1 dollar, the class size should be around 28 students.
